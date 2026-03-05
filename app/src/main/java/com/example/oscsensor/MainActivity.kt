@@ -117,12 +117,12 @@ class MainActivity : AppCompatActivity() {
             val port = binding.etPort.text.toString()
 
             // registerListener() uses microseconds when passing explicit delay values.
-            val samplingPeriodUs = when (binding.rgRate.checkedRadioButtonId) {
-                R.id.rbGame -> RATE_5_PER_SEC_US
-                R.id.rbFastest -> RATE_10_PER_SEC_US
-                R.id.rb20 -> RATE_20_PER_SEC_US
-                R.id.rb30 -> RATE_30_PER_SEC_US
-                R.id.rb60 -> RATE_60_PER_SEC_US
+            val samplingPeriodUs = when (binding.rateToggleGroup.checkedButtonId) {
+                R.id.btnRate5 -> RATE_5_PER_SEC_US
+                R.id.btnRate10 -> RATE_10_PER_SEC_US
+                R.id.btnRate20 -> RATE_20_PER_SEC_US
+                R.id.btnRate30 -> RATE_30_PER_SEC_US
+                R.id.btnRate60 -> RATE_60_PER_SEC_US
                 else -> RATE_1_PER_SEC_US
             }
 
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
     private fun disableInputs() {
         binding.etIpAddress.isEnabled = false
         binding.etPort.isEnabled = false
-        binding.rgRate.isEnabled = false
+        binding.rateToggleGroup.isEnabled = false
         for (i in 0 until binding.llSensors.childCount) {
             binding.llSensors.getChildAt(i).isEnabled = false
         }
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
     private fun enableInputs() {
         binding.etIpAddress.isEnabled = true
         binding.etPort.isEnabled = true
-        binding.rgRate.isEnabled = true
+        binding.rateToggleGroup.isEnabled = true
         for (i in 0 until binding.llSensors.childCount) {
             binding.llSensors.getChildAt(i).isEnabled = true
         }

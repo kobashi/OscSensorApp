@@ -55,49 +55,69 @@
             android:text="Sampling Rate"
             android:textSize="16sp" />
 
-        <RadioGroup
-            android:id="@+id/rgRate"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="8dp"
+            android:fillViewport="true"
+            android:scrollbars="none">
 
-            <RadioButton
-                android:id="@+id/rbNormal"
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/rateToggleGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="1/s" />
+                app:singleSelection="true"
+                app:checkedButton="@id/btnRate1">
 
-            <RadioButton
-                android:id="@+id/rbGame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5/s" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRate1"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="1/s" />
 
-            <RadioButton
-                android:id="@+id/rbFastest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10/s" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRate5"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="5/s" />
 
-            <RadioButton
-                android:id="@+id/rb20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="20/s" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRate10"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="10/s" />
 
-            <RadioButton
-                android:id="@+id/rb30"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="30/s" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRate20"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="20/s" />
 
-            <RadioButton
-                android:id="@+id/rb60"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="60/s" />
-        </RadioGroup>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRate30"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="30/s" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRate60"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:text="60/s" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+        </HorizontalScrollView>
 
         <TextView
             android:layout_width="wrap_content"
