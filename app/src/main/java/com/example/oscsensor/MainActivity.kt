@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity() {
         private const val RATE_1_PER_SEC_US = MICROS_PER_SECOND
         private const val RATE_5_PER_SEC_US = MICROS_PER_SECOND / 5
         private const val RATE_10_PER_SEC_US = MICROS_PER_SECOND / 10
+        private const val RATE_20_PER_SEC_US = MICROS_PER_SECOND / 20
+        private const val RATE_30_PER_SEC_US = MICROS_PER_SECOND / 30
+        private const val RATE_60_PER_SEC_US = MICROS_PER_SECOND / 60
 
         private const val PREFS_NAME = "connection_settings"
         private const val KEY_IP_ADDRESS = "ip_address"
@@ -117,6 +120,9 @@ class MainActivity : AppCompatActivity() {
             val samplingPeriodUs = when (binding.rgRate.checkedRadioButtonId) {
                 R.id.rbGame -> RATE_5_PER_SEC_US
                 R.id.rbFastest -> RATE_10_PER_SEC_US
+                R.id.rb20 -> RATE_20_PER_SEC_US
+                R.id.rb30 -> RATE_30_PER_SEC_US
+                R.id.rb60 -> RATE_60_PER_SEC_US
                 else -> RATE_1_PER_SEC_US
             }
 

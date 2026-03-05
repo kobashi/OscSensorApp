@@ -59,14 +59,14 @@
             android:id="@+id/rgRate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <RadioButton
                 android:id="@+id/rbNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1/s"
-                android:checked="true"/>
+                android:checked="true"
+                android:text="1/s" />
 
             <RadioButton
                 android:id="@+id/rbGame"
@@ -79,6 +79,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10/s" />
+
+            <RadioButton
+                android:id="@+id/rb20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20/s" />
+
+            <RadioButton
+                android:id="@+id/rb30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30/s" />
+
+            <RadioButton
+                android:id="@+id/rb60"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60/s" />
         </RadioGroup>
 
         <TextView
