@@ -1,0 +1,24 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color purple_200
+color purple_500
+color purple_700
+color teal_200
+color teal_700
+color white
+drawable ic_launcher
+id btnStartStop
+id etIpAddress
+id etPort
+id llSensors
+id rbFastest
+id rbGame
+id rbNormal
+id rgRate
+id tvStatus
+layout activity_main
+string app_name
+style Theme.OscSensorApp
+xml backup_rules
+xml data_extraction_rules
