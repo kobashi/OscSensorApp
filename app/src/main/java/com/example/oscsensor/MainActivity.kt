@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.CheckBox
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.example.oscsensor.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -13,11 +14,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private val selectedSensors = mutableSetOf<Int>()
+    private val settingsPrefs by lazy { getSharedPreferences(PREFS_NAME, MODE_PRIVATE) }
 
     companion object {
         private const val RATE_1_PER_SEC_US = 1_000_000
         private const val RATE_5_PER_SEC_US = 200_000
         private const val RATE_10_PER_SEC_US = 100_000
+
+        private const val PREFS_NAME = "connection_settings"
+        private const val KEY_IP_ADDRESS = "ip_address"
+        private const val KEY_PORT = "port"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +31,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        restoreConnectionSettings()
         setupObservers()
         setupListeners()
+    }
+
+    private fun restoreConnectionSettings() {
+        val defaultIp = binding.etIpAddress.text?.toString().orEmpty()
+        val defaultPort = binding.etPort.text?.toString().orEmpty()
+
+        val savedIp = settingsPrefs.getString(KEY_IP_ADDRESS, defaultIp).orEmpty()
+        val savedPort = settingsPrefs.getString(KEY_PORT, defaultPort).orEmpty()
+
+        binding.etIpAddress.setText(savedIp)
+        binding.etPort.setText(savedPort)
+    }
+
+    private fun saveConnectionSettings() {
+        settingsPrefs.edit()
+            .putString(KEY_IP_ADDRESS, binding.etIpAddress.text?.toString().orEmpty())
+            .putString(KEY_PORT, binding.etPort.text?.toString().orEmpty())
+            .apply()
     }
 
     private fun setupObservers() {
@@ -75,6 +100,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+        binding.etIpAddress.doAfterTextChanged {
+            saveConnectionSettings()
+        }
+
+        binding.etPort.doAfterTextChanged {
+            saveConnectionSettings()
+        }
+
         binding.btnStartStop.setOnClickListener {
             val ip = binding.etIpAddress.text.toString()
             val port = binding.etPort.text.toString()
