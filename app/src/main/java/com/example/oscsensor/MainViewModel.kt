@@ -2,7 +2,7 @@ package com.example.oscsensor
 
 import android.app.Application
 import android.hardware.Sensor
-import android.hardware.SensorManager
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -33,6 +33,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun start(ip: String, portStr: String, selectedSensors: Set<Int>, rate: Int) {
         try {
             val port = portStr.toInt()
+            logDebug("Start requested: ip=$ip port=$port rate=${rate}us sensors=${selectedSensors.size}")
+            if (selectedSensors.isEmpty()) {
+                logWarn("No sensors selected. No OSC data will be sent.")
+            }
             oscManager.connect(ip, port)
             sensorRepository.setSamplingRate(rate)
             selectedSensors.forEach { sensorType ->
@@ -40,6 +44,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             _isRunning.value = true
         } catch (e: Exception) {
+            logError("Failed to start OSC streaming", e)
             e.printStackTrace()
         }
     }
@@ -53,5 +58,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     override fun onCleared() {
         super.onCleared()
         stop()
+    }
+
+    private fun logDebug(message: String) {
+        if (BuildConfig.ENABLE_VERBOSE_LOGGING) {
+            Log.d(TAG, message)
+        }
+    }
+
+    private fun logWarn(message: String) {
+        if (BuildConfig.ENABLE_VERBOSE_LOGGING) {
+            Log.w(TAG, message)
+        }
+    }
+
+    private fun logError(message: String, throwable: Throwable) {
+        if (BuildConfig.ENABLE_VERBOSE_LOGGING) {
+            Log.e(TAG, message, throwable)
+        }
+    }
+
+    companion object {
+        private const val TAG = "MainViewModel"
     }
 }
