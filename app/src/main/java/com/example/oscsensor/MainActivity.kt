@@ -2,7 +2,6 @@ package com.example.oscsensor
 
 import android.graphics.Color
 import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.widget.CheckBox
 import androidx.activity.viewModels
@@ -15,20 +14,19 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val selectedSensors = mutableSetOf<Int>()
 
+    companion object {
+        private const val RATE_1_PER_SEC_US = 1_000_000
+        private const val RATE_5_PER_SEC_US = 200_000
+        private const val RATE_10_PER_SEC_US = 100_000
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRateLabels()
         setupObservers()
         setupListeners()
-    }
-
-    private fun setupRateLabels() {
-        binding.rbNormal.text = "Normal (${SensorManager.SENSOR_DELAY_NORMAL})"
-        binding.rbGame.text = "Game (${SensorManager.SENSOR_DELAY_GAME})"
-        binding.rbFastest.text = "Fastest (${SensorManager.SENSOR_DELAY_FASTEST})"
     }
 
     private fun setupObservers() {
@@ -82,9 +80,9 @@ class MainActivity : AppCompatActivity() {
             val port = binding.etPort.text.toString()
 
             val rate = when (binding.rgRate.checkedRadioButtonId) {
-                R.id.rbGame -> SensorManager.SENSOR_DELAY_GAME
-                R.id.rbFastest -> SensorManager.SENSOR_DELAY_FASTEST
-                else -> SensorManager.SENSOR_DELAY_NORMAL
+                R.id.rbGame -> RATE_5_PER_SEC_US
+                R.id.rbFastest -> RATE_10_PER_SEC_US
+                else -> RATE_1_PER_SEC_US
             }
 
             viewModel.toggleStartStop(ip, port, selectedSensors, rate)

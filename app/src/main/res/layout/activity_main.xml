@@ -65,20 +65,20 @@
                 android:id="@+id/rbNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Normal"
+                android:text="1/s"
                 android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/rbGame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Game" />
+                android:text="5/s" />
 
             <RadioButton
                 android:id="@+id/rbFastest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fastest" />
+                android:text="10/s" />
         </RadioGroup>
 
         <TextView
