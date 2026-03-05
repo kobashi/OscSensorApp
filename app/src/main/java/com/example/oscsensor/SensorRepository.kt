@@ -13,9 +13,16 @@ class SensorRepository(context: Context) : SensorEventListener {
     private val activeSensors = mutableSetOf<Int>()
     private val firstEventLoggedSensors = mutableSetOf<Int>()
     private var samplingRateMicroseconds = SensorManager.SENSOR_DELAY_NORMAL
+    private var addressPrefix = DEFAULT_ADDRESS_PREFIX
 
     fun setOscManager(manager: OscManager) {
         this.oscManager = manager
+    }
+
+    fun setAddressPrefix(prefix: String) {
+        val normalized = prefix.trim().trim('/').ifEmpty { DEFAULT_ADDRESS_PREFIX }
+        addressPrefix = normalized
+        logDebug("Address prefix set to $addressPrefix")
     }
 
     fun getAvailableSensors(): List<Sensor> {
@@ -73,7 +80,7 @@ class SensorRepository(context: Context) : SensorEventListener {
                 firstEventLoggedSensors.add(it.sensor.type)
                 logDebug("First sensor event received from ${it.sensor.name}")
             }
-            val address = "/zigsim/${it.sensor.stringType.replace(".", "/")}"
+            val address = "/$addressPrefix/${it.sensor.stringType.replace(".", "/")}"
             val args = it.values.toList()
             oscManager?.send(address, args)
         }
@@ -105,5 +112,6 @@ class SensorRepository(context: Context) : SensorEventListener {
 
     companion object {
         private const val TAG = "SensorRepository"
+        private const val DEFAULT_ADDRESS_PREFIX = "zigsim"
     }
 }

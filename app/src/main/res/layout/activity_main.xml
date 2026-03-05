@@ -48,6 +48,20 @@
                 android:text="8000" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="OSC Prefix">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAddressPrefix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="zigsim" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,8 +80,8 @@
                 android:id="@+id/rateToggleGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:singleSelection="true"
-                app:checkedButton="@id/btnRate1">
+                app:checkedButton="@id/btnRate1"
+                app:singleSelection="true">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRate1"

@@ -22,22 +22,38 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _availableSensors.value = sensorRepository.getAvailableSensors()
     }
 
-    fun toggleStartStop(ip: String, port: String, selectedSensors: Set<Int>, rate: Int) {
+    fun toggleStartStop(
+        ip: String,
+        port: String,
+        addressPrefix: String,
+        selectedSensors: Set<Int>,
+        rate: Int
+    ) {
         if (_isRunning.value == true) {
             stop()
         } else {
-            start(ip, port, selectedSensors, rate)
+            start(ip, port, addressPrefix, selectedSensors, rate)
         }
     }
 
-    private fun start(ip: String, portStr: String, selectedSensors: Set<Int>, rate: Int) {
+    private fun start(
+        ip: String,
+        portStr: String,
+        addressPrefix: String,
+        selectedSensors: Set<Int>,
+        rate: Int
+    ) {
         try {
             val port = portStr.toInt()
-            logDebug("Start requested: ip=$ip port=$port rate=${rate}us sensors=${selectedSensors.size}")
+            logDebug(
+                "Start requested: ip=$ip port=$port prefix=$addressPrefix " +
+                    "rate=${rate}us sensors=${selectedSensors.size}"
+            )
             if (selectedSensors.isEmpty()) {
                 logWarn("No sensors selected. No OSC data will be sent.")
             }
             oscManager.connect(ip, port)
+            sensorRepository.setAddressPrefix(addressPrefix)
             sensorRepository.setSamplingRate(rate)
             selectedSensors.forEach { sensorType ->
                 sensorRepository.startSensor(sensorType)

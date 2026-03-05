@@ -25,9 +25,11 @@ class MainActivity : AppCompatActivity() {
         private const val RATE_30_PER_SEC_US = MICROS_PER_SECOND / 30
         private const val RATE_60_PER_SEC_US = MICROS_PER_SECOND / 60
 
+        private const val DEFAULT_PREFIX = "zigsim"
         private const val PREFS_NAME = "connection_settings"
         private const val KEY_IP_ADDRESS = "ip_address"
         private const val KEY_PORT = "port"
+        private const val KEY_ADDRESS_PREFIX = "address_prefix"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,15 +48,18 @@ class MainActivity : AppCompatActivity() {
 
         val savedIp = settingsPrefs.getString(KEY_IP_ADDRESS, defaultIp).orEmpty()
         val savedPort = settingsPrefs.getString(KEY_PORT, defaultPort).orEmpty()
+        val savedPrefix = settingsPrefs.getString(KEY_ADDRESS_PREFIX, DEFAULT_PREFIX).orEmpty()
 
         binding.etIpAddress.setText(savedIp)
         binding.etPort.setText(savedPort)
+        binding.etAddressPrefix.setText(savedPrefix)
     }
 
     private fun saveConnectionSettings() {
         settingsPrefs.edit()
             .putString(KEY_IP_ADDRESS, binding.etIpAddress.text?.toString().orEmpty())
             .putString(KEY_PORT, binding.etPort.text?.toString().orEmpty())
+            .putString(KEY_ADDRESS_PREFIX, binding.etAddressPrefix.text?.toString().orEmpty())
             .apply()
     }
 
@@ -112,9 +117,14 @@ class MainActivity : AppCompatActivity() {
             saveConnectionSettings()
         }
 
+        binding.etAddressPrefix.doAfterTextChanged {
+            saveConnectionSettings()
+        }
+
         binding.btnStartStop.setOnClickListener {
             val ip = binding.etIpAddress.text.toString()
             val port = binding.etPort.text.toString()
+            val prefix = binding.etAddressPrefix.text?.toString().orEmpty()
 
             // registerListener() uses microseconds when passing explicit delay values.
             val samplingPeriodUs = when (binding.rateToggleGroup.checkedButtonId) {
@@ -126,13 +136,14 @@ class MainActivity : AppCompatActivity() {
                 else -> RATE_1_PER_SEC_US
             }
 
-            viewModel.toggleStartStop(ip, port, selectedSensors, samplingPeriodUs)
+            viewModel.toggleStartStop(ip, port, prefix, selectedSensors, samplingPeriodUs)
         }
     }
 
     private fun disableInputs() {
         binding.etIpAddress.isEnabled = false
         binding.etPort.isEnabled = false
+        binding.etAddressPrefix.isEnabled = false
         binding.rateToggleGroup.isEnabled = false
         for (i in 0 until binding.llSensors.childCount) {
             binding.llSensors.getChildAt(i).isEnabled = false
@@ -142,6 +153,7 @@ class MainActivity : AppCompatActivity() {
     private fun enableInputs() {
         binding.etIpAddress.isEnabled = true
         binding.etPort.isEnabled = true
+        binding.etAddressPrefix.isEnabled = true
         binding.rateToggleGroup.isEnabled = true
         for (i in 0 until binding.llSensors.childCount) {
             binding.llSensors.getChildAt(i).isEnabled = true
