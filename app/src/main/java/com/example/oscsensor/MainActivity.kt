@@ -20,8 +20,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupRateLabels()
         setupObservers()
         setupListeners()
+    }
+
+    private fun setupRateLabels() {
+        binding.rbNormal.text = "Normal (${SensorManager.SENSOR_DELAY_NORMAL})"
+        binding.rbGame.text = "Game (${SensorManager.SENSOR_DELAY_GAME})"
+        binding.rbFastest.text = "Fastest (${SensorManager.SENSOR_DELAY_FASTEST})"
     }
 
     private fun setupObservers() {
@@ -39,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 Sensor.TYPE_PRESSURE,
                 Sensor.TYPE_PROXIMITY
             )
-            
+
             sensors.filter { commonTypes.contains(it.type) }.distinctBy { it.type }.forEach { sensor ->
                 val checkBox = CheckBox(this)
                 checkBox.text = sensor.name
@@ -73,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnStartStop.setOnClickListener {
             val ip = binding.etIpAddress.text.toString()
             val port = binding.etPort.text.toString()
-            
+
             val rate = when (binding.rgRate.checkedRadioButtonId) {
                 R.id.rbGame -> SensorManager.SENSOR_DELAY_GAME
                 R.id.rbFastest -> SensorManager.SENSOR_DELAY_FASTEST
