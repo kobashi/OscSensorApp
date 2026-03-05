@@ -17,9 +17,10 @@ class MainActivity : AppCompatActivity() {
     private val settingsPrefs by lazy { getSharedPreferences(PREFS_NAME, MODE_PRIVATE) }
 
     companion object {
-        private const val RATE_1_PER_SEC_US = 1_000_000
-        private const val RATE_5_PER_SEC_US = 200_000
-        private const val RATE_10_PER_SEC_US = 100_000
+        private const val MICROS_PER_SECOND = 1_000_000
+        private const val RATE_1_PER_SEC_US = MICROS_PER_SECOND
+        private const val RATE_5_PER_SEC_US = MICROS_PER_SECOND / 5
+        private const val RATE_10_PER_SEC_US = MICROS_PER_SECOND / 10
 
         private const val PREFS_NAME = "connection_settings"
         private const val KEY_IP_ADDRESS = "ip_address"
@@ -112,13 +113,14 @@ class MainActivity : AppCompatActivity() {
             val ip = binding.etIpAddress.text.toString()
             val port = binding.etPort.text.toString()
 
-            val rate = when (binding.rgRate.checkedRadioButtonId) {
+            // registerListener() uses microseconds when passing explicit delay values.
+            val samplingPeriodUs = when (binding.rgRate.checkedRadioButtonId) {
                 R.id.rbGame -> RATE_5_PER_SEC_US
                 R.id.rbFastest -> RATE_10_PER_SEC_US
                 else -> RATE_1_PER_SEC_US
             }
 
-            viewModel.toggleStartStop(ip, port, selectedSensors, rate)
+            viewModel.toggleStartStop(ip, port, selectedSensors, samplingPeriodUs)
         }
     }
 
